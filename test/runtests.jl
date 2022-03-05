@@ -26,5 +26,5 @@ using FiniteDifferences
     ∂f = gradient(f, G, α, β)
     ∂f_fdm = grad(central_fdm(3, 1, max_range=1e-4), f, G, α, β)
 
-    println(all(isapprox(∂f[i], ∂f_fdm[i], rtol=1e-3) for i in 1:3)) # check gradients ∂f/∂G, ∂f/∂α, ∂f/∂β
+    @test all(isapprox(∂f[i], ∂f_fdm[i], rtol=1e-3) for i in 1:3) # check gradients ∂f/∂G, ∂f/∂α, ∂f/∂β
 end
