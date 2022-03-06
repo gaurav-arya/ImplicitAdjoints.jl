@@ -33,7 +33,7 @@ println(all(isapprox(∂f[i], ∂f_fdm[i], rtol=1e-3) for i in 1:3)) # check gra
 # true
 ```
 
-Right now, the code contains the precise amount necessary for a matrix-free sensitivity analysis of Lasso to work (in the above example, G can be replaced by an arbitrary linear operator). Both `L1` and `TV` regularizer types are implemented. Some possible future goals:
+Right now, the code contains the precise amount necessary for a matrix-free sensitivity analysis of Lasso to work (in the above example, `G` can be replaced by an arbitrary linear operator). `G` and `G'` are assumed to support the non-allocating `mul!` operation, which is used in the iterative solvers, as well as the out-of-place `*` operation, which is used in sensitivity analysis and assumed to be compatible with standard AD. Both `L1` and `TV` regularizer types are implemented. Some possible future goals:
 
 - Provide a interface for easily defining matrix-free adjoint sensitivity rules, to avoid [reinventing the wheel in each package](https://discourse.julialang.org/t/ad-step-for-iterative-solution/26404/4).
 - Define rules for common problems, including the Lasso.

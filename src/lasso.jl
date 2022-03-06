@@ -16,7 +16,7 @@
     - 'u': recovered vector. 
     - 'info': solver info.
 """
-genlasso(G, y, α, β, iters, tol, reg::Regularizer) = FISTA(G, y, α, β, iters, tol, reg)
+genlasso(G, y, α, β, iters, tol, reg::Regularizer) = fista(G, y, α, β, iters, tol, reg)
 
 function fake_genlasso(u, G, y, α, β, iters, tol, reg::Regularizer)
     
