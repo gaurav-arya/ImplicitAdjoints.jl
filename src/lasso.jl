@@ -1,4 +1,3 @@
-
 """
     genlasso(G, y, α, β, iters, tol, reg::Regularizer)
 
