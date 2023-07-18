@@ -1,6 +1,6 @@
 # ImplicitAdjoints [WIP]
 
-A work-in-progress package for *matrix-free* adjoint sensitivity analysis, integrated into the [Julia AD ecosystem](https://juliadiff.org/ChainRulesCore.jl/stable/). Initially, it contains a sensitivity analysis specifically for the generalized Lasso problem. Example:
+Contains a sensitivity analysis for the generalized Lasso problem, see example below. Eventually the adjoint method should become a macro / utility function for helping define an rrule, and the sensitivity analysis here can be simplified to only form the linear operators required by that.
 
 ```julia
 using Random: randperm
@@ -32,21 +32,3 @@ end
 println(all(isapprox(∂f[i], ∂f_fdm[i], rtol=1e-3) for i in 1:3)) # check gradients ∂f/∂G, ∂f/∂α, ∂f/∂β
 # true
 ```
-
-Right now, the code contains the precise amount necessary for a matrix-free sensitivity analysis of Lasso to work (in the above example, G can be replaced by an arbitrary linear operator). Both `L1` and `TV` regularizer types are implemented. Some possible future goals:
-
-- Provide a interface for easily defining matrix-free adjoint sensitivity rules, to avoid [reinventing the wheel in each package](https://discourse.julialang.org/t/ad-step-for-iterative-solution/26404/4).
-- Define rules for common problems, including the Lasso.
-
-The [jaxopt](https://github.com/google/jaxopt) Python library may be worth looking at. 
-
-Notes on how this package relates to the ecosystem:
-
-- Part of this package performs type piracy on `LinearMaps` to get things to work with AD. That stuff should be polished and moved to `LinearMaps`. 
-- Something missing from this package, but is very useful in practice when incorporating `genlasso` into pipelines, is good tooling for defining matrix-free operators with `LinearMaps` (e.g. for defining the measurement matrix of an imaging system). This might be best as a separate package.
-- Ideally rules should be solver independent; a forward implementation of `genlasso` probably shouldn't be here, and the regularizer interface should be simplified accordingly.
-- Need to think about how this package will interact with `IterativeSolvers`.
-
-
-
-

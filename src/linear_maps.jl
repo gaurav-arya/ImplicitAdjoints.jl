@@ -50,12 +50,3 @@ function rrule(::typeof(*), A::Union{BlockMap, TransposeMap{<:Any, <:BlockMap}},
     # @not_implemented("Derivative of BlockMap multiplication w.r.t. the map itself is not implemented") # TODO: use this, while avoiding error when Zygote backpropagates not implemented for no reason
     A * x, pullback
 end
-
-# fixes bug in LinearMaps.jl: _unsafe_mul! (used, for example, in CompositeMap's) does not fall back to mul! for transpose maps
-_unsafe_mul!(y::AbstractVecOrMat, A::TransposeMap, x::AbstractVector) =
-                issymmetric(A.lmap) ?
-               _unsafe_mul!(y, A.lmap, x) : LinearMaps._generic_mapvec_mul!(y, A, x, 1, 0)
-               
-_unsafe_mul!(y::AbstractVecOrMat, A::AdjointMap, x::AbstractVector) =
-                ishermitian(A.lmap) ?
-               _unsafe_mul!(y, A.lmap, x) : LinearMaps._generic_mapvec_mul!(y, A, x, 1, 0)
