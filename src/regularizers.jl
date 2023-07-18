@@ -54,8 +54,8 @@ end
 
 Base.:(*)(P::L1Project, x::AbstractVector) = x[P.suppinv .> 0]
 Base.:(*)(Pt::L1ProjectTranspose, y::AbstractVector) = [Pt.lmap.suppinv[i] > 0 ? y[Pt.lmap.suppinv[i]] : 0.0 for i in 1:Pt.lmap.p] # TODO: use zero element instead?
-mul!(uflat::AbstractVecOrMat, P::L1Project, yflat::AbstractVector) = (uflat[:] = P * yflat)
-mul!(uflat::AbstractVecOrMat, Pt::L1ProjectTranspose, yflat::AbstractVector) = (uflat[:] = Pt * yflat)
+LinearMaps._unsafe_mul!(uflat::AbstractVecOrMat, P::L1Project, yflat::AbstractVector) = (uflat[:] = P * yflat)
+LinearMaps._unsafe_mul!(uflat::AbstractVecOrMat, Pt::L1ProjectTranspose, yflat::AbstractVector) = (uflat[:] = Pt * yflat)
 
 projection_op(supp, reg::L1) = L1Project(reg.size, supp)
 
@@ -133,8 +133,8 @@ function Base.:(*)(Dt::GradientTranspose, xflat::AbstractVector)
     y[:]
 end
 
-mul!(uflat::AbstractVecOrMat, D::Gradient, yflat::AbstractVector) = (uflat[:] = D * yflat)
-mul!(uflat::AbstractVecOrMat, Dt::GradientTranspose, yflat::AbstractVector) = (uflat[:] = Dt * yflat)
+LinearMaps._unsafe_mul!(uflat::AbstractVecOrMat, D::Gradient, yflat::AbstractVector) = (uflat[:] = D * yflat)
+LinearMaps._unsafe_mul!(uflat::AbstractVecOrMat, Dt::GradientTranspose, yflat::AbstractVector) = (uflat[:] = Dt * yflat)
 
 function transform_op(reg::TV)
     ndims = length(reg.size)
@@ -221,6 +221,6 @@ function Base.:(*)(Pt::TVProjectTranspose, y::AbstractVector)
 end
 
 projection_op(supp, reg::TV) = TVProject(reg.size, supp, reg.wrap)
-mul!(uflat::AbstractVecOrMat, P::TVProject, yflat::AbstractVector) = (uflat[:] = P * yflat)
-mul!(uflat::AbstractVecOrMat, Pt::TVProjectTranspose, yflat::AbstractVector) = (uflat[:] = Pt * yflat)
+LinearMaps._unsafe_mul!(uflat::AbstractVecOrMat, P::TVProject, yflat::AbstractVector) = (uflat[:] = P * yflat)
+LinearMaps._unsafe_mul!(uflat::AbstractVecOrMat, Pt::TVProjectTranspose, yflat::AbstractVector) = (uflat[:] = Pt * yflat)
 

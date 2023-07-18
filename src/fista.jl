@@ -1,10 +1,10 @@
 # uses the Fast Iterative Soft-Thresholding Algorithm (FISTA) to
 # minimize f(x) + g(x) = ½(|Ax - y|² + β|x|²) + ½α|Ψx|₁
 
-FISTA(A, y, α, β, iters, tol, reg::Regularizer) = FISTA(A, y, α, β, iters, tol, reg::Regularizer, zeros(size(A)[2]))
+fista(A, y, α, β, iters, tol, reg::Regularizer) = fista(A, y, α, β, iters, tol, reg::Regularizer, zeros(size(A)[2]))
 
 # TODO: structure similarly to IterativeSolvers 
-function FISTA(A, y, α, β, iters, tol, reg::Regularizer, xstart)
+function fista(A, y, α, β, iters, tol, reg::Regularizer, xstart)
     n, p = size(A)
     
     maxeig = abs(powm(A' * A, maxiter=100)[1]) # TODO: handle number of eigiters
@@ -31,7 +31,7 @@ function FISTA(A, y, α, β, iters, tol, reg::Regularizer, xstart)
         xold .= x
 
         res .= mul!(res, A, z) .- y # TODO: maybe use five-arg mul! instead. (but IterativeSolvers sticks to three-arg)
-        grad .= mul!(grad, A', res) .+ β * z 
+        grad .= mul!(grad, A', res) .+ β .* z 
 
         x .= z .- η .* grad
         proximal!(x, 1/2 * η * α, reg)
@@ -42,7 +42,7 @@ function FISTA(A, y, α, β, iters, tol, reg::Regularizer, xstart)
         told = t
         t = 1/2 * (1 + √(1 + 4t^2))
         
-        z .= x .+ (told - 1)/t * (x .- xold)
+        z .= x .+ (told - 1)/t .* (x .- xold)
 
         xupdate = norm(z .- xold) / norm(xold)
         append!(xupdates, xupdate)
