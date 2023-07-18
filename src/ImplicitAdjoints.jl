@@ -1,6 +1,10 @@
 module ImplicitAdjoints
 
-    export genlasso, L1, TV
+    export genlasso, fake_genlasso, L1, TV
+    export FISTA
+    export run_reconstruction_test
+    export Identity
+    export proximal, transform_op, projection_op, support, L1, TV, L1Project, TVProject, Gradient
 
     using ChainRulesCore
     import ChainRulesCore.rrule
