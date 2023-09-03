@@ -1,6 +1,6 @@
 # ImplicitAdjoints [WIP]
 
-Contains a sensitivity analysis for the generalized Lasso problem, see example below. Eventually the adjoint method should become a macro / utility function for helping define an rrule, and the sensitivity analysis here can be simplified to only form the linear operators required by that.
+Contains a sensitivity analysis for the generalized Lasso problem, see example below. 
 
 ```julia
 using Random: randperm
